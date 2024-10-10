@@ -1,6 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Net;
 using System.IO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 Console.WriteLine("TCP Server:");
 
  // Start serveren på port 5000
@@ -71,7 +72,7 @@ Task.Run(() => HandleClient(client));
                     writer.WriteLine($"Svar fra server: Random nummer mellem {num1ForRandom} og {num2ForRandom}: {randomNumber}");
 
                 }
-                //ellers få man en genneral error
+                //ellers vil man få en genneral error hvis tallen ikke omsætte til tal
                 else
                 {
                     //udskriver til klient (writer.WriteLine) og server konsole (Console.WriteLine)
@@ -98,6 +99,7 @@ Task.Run(() => HandleClient(client));
                     Console.WriteLine($"Resultat af add: {result}");
                     writer.WriteLine($"Svar fra server: Resultat af add: {result}");
                 }
+                //ellers vil man få en genneral error hvis tallen ikke omsætte til tal
                 else
                 {
                     //udskriver til klient (writer.WriteLine) og server konsole (Console.WriteLine)
@@ -127,6 +129,7 @@ Task.Run(() => HandleClient(client));
                     Console.WriteLine($"Sendt til klient: Resultat af subtract {result}");
                     writer.WriteLine($"Svar fra server: Resultat af subtract: {result}");
                 }
+                //ellers vil man få en genneral error hvis tallen ikke omsætte til tal
                 else
                 {
                     //udskriver til klient (writer.WriteLine) og server konsole (Console.WriteLine)
@@ -134,7 +137,7 @@ Task.Run(() => HandleClient(client));
                     writer.WriteLine("Tallen du har indtastet er ugyldig");
                 }
             }
-
+           
             else if (message == "exit")
             {
                 //udskriver til klient (writer.WriteLine) og server konsole (Console.WriteLine)
@@ -147,6 +150,7 @@ Task.Run(() => HandleClient(client));
                 //Stopper while-løkken
                 break;
             }
+            //Hvis ikke noget matcher vil man få en  genneral error
             else
             {
                 //udskriver til klient (writer.WriteLine) og server konsole (Console.WriteLine)
