@@ -16,9 +16,9 @@ StreamReader reader = new StreamReader(stream);
 StreamWriter writer = new StreamWriter(stream) { AutoFlush = true }; 
 //Jeg har sat AutoFlush = true i sted for at skrive writer.Flush efter værre gang vi laver en writer.WriteLine();
 
-// Klienten skal fortsætte med at sende kommandoer
-try { 
-while (true)
+try {
+    // Klienten skal fortsætte med at sende kommandoer
+    while (true)
 {
     //Læser første bedsked
     string FirstMessage = reader.ReadLine();

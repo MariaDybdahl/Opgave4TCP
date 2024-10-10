@@ -14,8 +14,8 @@ while (true)
 //Acceptér forbindelse fra klienten
 TcpClient client = server.AcceptTcpClient();
 Console.WriteLine("Klient forbundet!");
-            
-// Start en ny tråd til at håndtere klienten
+
+//Starter en ny asynkron opgave for at håndtere klienten i baggrunden
 Task.Run(() => HandleClient(client));
 
 }
@@ -37,29 +37,35 @@ Task.Run(() => HandleClient(client));
         {
             //Første bedsked som bliver sent over til klient siden
             string messagekommando = "Skriv kommando ('random', 'add', 'subtract' eller 'exit')";
+
             //udskriver til klient (writer.WriteLine) og server konsole (Console.WriteLine)
             writer.WriteLine(messagekommando);
             Console.WriteLine("Sendt til klient:" + messagekommando);
+
             // Modtager kommando fra klienten, sætter den til lowercase 
             string message = reader.ReadLine()?.ToLower();
             Console.WriteLine($"Modtaget kommando fra klient: {message}");
+
             //hvis kommando er random
             if (message == "random")
             {
                 //udskriver til klient (writer.WriteLine) og server konsole (Console.WriteLine)
                 writer.WriteLine("Indtast to tal adskilt af mellemrum (f.eks. 1 10)");
                 Console.WriteLine("Sendt til klient: Indtast to tal adskilt af mellemrum (f.eks. 1 10)");
+
                 // Læser en linje fra input og splitter den op i dele baseret på mellemrum gemmes i parts af array af string.
-                string[] parts = reader.ReadLine().Split(' ');
+                string[] messageParts = reader.ReadLine().Split(' ');
 
                 //Ser om der er 2 ting i parts hvis der er
                 //vil den konverterede til et helt tal som blive gemt i num1 derefter vil den konverterede det andet tal til et heltal i num2 
-                if (parts.Length == 2 && int.TryParse(parts[0], out int num1ForRandom) && int.TryParse(parts[1], out int num2ForRandom))
+                if (messageParts.Length == 2 && int.TryParse(messageParts[0], out int num1ForRandom) && int.TryParse(messageParts[1], out int num2ForRandom))
                 {
-                    //bruger class random
+                    //bruger type random og laver et nyt obejkt vedd navn random
                     Random random = new Random();
+
                     //får nummet via random.Next som er num1, num2+1 får at for det nummer2 med. fx 1,2 vil begge værre en del af det, hvis kun uden num2+1 vil man kun havde num1 og num2 vil slet ikke ingå
                     int randomNumber = random.Next(num1ForRandom, (num2ForRandom + 1));
+
                     //udskriver til klient (writer.WriteLine) og server konsole (Console.WriteLine)
                     Console.WriteLine($"Random nummer mellem {num1ForRandom} og {num2ForRandom}: {randomNumber}");
                     writer.WriteLine($"Svar fra server: Random nummer mellem {num1ForRandom} og {num2ForRandom}: {randomNumber}");
@@ -78,14 +84,16 @@ Task.Run(() => HandleClient(client));
                 //udskriver til klient (writer.WriteLine) og server konsole (Console.WriteLine)
                 writer.WriteLine("Indtast to tal adskilt af mellemrum (f.eks. 1 10)");
                 Console.WriteLine("Sendt til klient: Indtast to tal adskilt af mellemrum (f.eks. 1 10)");
+
                 // Læser en linje fra input og splitter den op i dele baseret på mellemrum
-                string[] parts = reader.ReadLine().Split(' ');
+                string[] messageParts = reader.ReadLine().Split(' ');
                 //Ser om der er 2 ting i parts hvis der er
                 //vil den konverterede til et helt tal som blive gemt i num1 derefter vil den konverterede det andet tal til et heltal i num2 
-                if (parts.Length == 2 && int.TryParse(parts[0], out int num1) && int.TryParse(parts[1], out int num2))
+                if (messageParts.Length == 2 && int.TryParse(messageParts[0], out int num1) && int.TryParse(messageParts[1], out int num2))
                 {
                     //result er num1 + nummer2
                     int result = num1 + num2;
+
                     //udskriver til klient (writer.WriteLine) og server konsole (Console.WriteLine)
                     Console.WriteLine($"Resultat af add: {result}");
                     writer.WriteLine($"Svar fra server: Resultat af add: {result}");
@@ -105,11 +113,13 @@ Task.Run(() => HandleClient(client));
                 //udskriver til klient (writer.WriteLine) og server konsole (Console.WriteLine)
                 writer.WriteLine("Indtast to tal adskilt af mellemrum (f.eks. 1 10)");
                 Console.WriteLine("Sendt til klient: Indtast to tal adskilt af mellemrum (f.eks. 10 1)");
+
                 // Læser en linje fra input og splitter den op i dele baseret på mellemrum
-                string[] parts = reader.ReadLine().Split(' ');
+                string[] messageParts = reader.ReadLine().Split(' ');
+
                 //Ser om der er 2 ting i parts hvis der er
                 //vil den konverterede til et helt tal som blive gemt i num1 derefter vil den konverterede det andet tal til et heltal i num2 
-                if (parts.Length == 2 && int.TryParse(parts[0], out int num1) && int.TryParse(parts[1], out int num2))
+                if (messageParts.Length == 2 && int.TryParse(messageParts[0], out int num1) && int.TryParse(messageParts[1], out int num2))
                 {
                     //result trækker num2 fra num1
                     int result = num1 - num2;
@@ -130,8 +140,10 @@ Task.Run(() => HandleClient(client));
                 //udskriver til klient (writer.WriteLine) og server konsole (Console.WriteLine)
                 Console.WriteLine("Klienten har afsluttet forbindelsen");
                 writer.WriteLine("Farvel!");
+
                 //lukker klient.
                 client.Close();
+
                 //Stopper while-løkken
                 break;
             }
